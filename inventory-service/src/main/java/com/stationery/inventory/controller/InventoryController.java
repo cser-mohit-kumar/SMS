@@ -33,9 +33,24 @@ public class InventoryController {
     private static final Logger log = LoggerFactory.getLogger(InventoryController.class);
 
     private final InventoryService inventoryService;
+    private final com.stationery.inventory.client.AuditClient auditClient;
 
-    public InventoryController(InventoryService inventoryService) {
+    public InventoryController(InventoryService inventoryService, com.stationery.inventory.client.AuditClient auditClient) {
         this.inventoryService = inventoryService;
+        this.auditClient = auditClient;
+    }
+
+    private void logAudit(String userName, String userRole, String action, String details) {
+        try {
+            java.util.Map<String, Object> audit = new java.util.HashMap<>();
+            audit.put("username", userName);
+            audit.put("userRole", userRole);
+            audit.put("action", action);
+            audit.put("details", details);
+            auditClient.logAction(audit);
+        } catch (Exception e) {
+            log.error("Failed to log audit event {} for user {}: {}", action, userName, e.getMessage());
+        }
     }
 
     /**
@@ -66,6 +81,8 @@ public class InventoryController {
                 userName, userRole, request.getName());
 
         StationeryItemResponse response = inventoryService.createItem(request);
+        logAudit(userName, userRole, "ITEM_CREATED", String.format("Created item: %s, Qty: %d",
+                response.getName(), response.getAvailableQuantity()));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -157,6 +174,8 @@ public class InventoryController {
         log.info("AUDIT: User '{}' (role: {}) updating stationery item ID: {}", userName, userRole, id);
 
         StationeryItemResponse response = inventoryService.updateItem(id, request);
+        logAudit(userName, userRole, "ITEM_UPDATED", String.format("Updated item: %s (ID: %d), Qty: %d",
+                response.getName(), response.getId(), response.getAvailableQuantity()));
         return ResponseEntity.ok(response);
     }
 
@@ -189,6 +208,7 @@ public class InventoryController {
         log.info("AUDIT: User '{}' (role: {}) deleting stationery item ID: {}", userName, userRole, id);
 
         inventoryService.deleteItem(id);
+        logAudit(userName, userRole, "ITEM_DELETED", String.format("Deleted item with ID: %d", id));
         return ResponseEntity.noContent().build();
     }
 

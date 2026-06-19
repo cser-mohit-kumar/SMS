@@ -9,6 +9,7 @@ import {
   FileStack,
   LogOut,
   X,
+  History,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Sidebar.css';
@@ -30,6 +31,7 @@ const ADMIN_LINKS = [
   { path: '/inventory', label: 'Inventory', icon: Package },
   { path: '/inventory/add', label: 'Add Item', icon: PackagePlus },
   { path: '/requests/manage', label: 'Manage Requests', icon: ClipboardCheck },
+  { path: '/audit', label: 'Audit Logs', icon: History },
 ];
 
 const STUDENT_LINKS = [

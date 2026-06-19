@@ -36,9 +36,24 @@ public class RequestController {
     private static final Logger log = LoggerFactory.getLogger(RequestController.class);
 
     private final RequestService requestService;
+    private final com.stationery.request.client.AuditClient auditClient;
 
-    public RequestController(RequestService requestService) {
+    public RequestController(RequestService requestService, com.stationery.request.client.AuditClient auditClient) {
         this.requestService = requestService;
+        this.auditClient = auditClient;
+    }
+
+    private void logAudit(String userName, String userRole, String action, String details) {
+        try {
+            java.util.Map<String, Object> audit = new java.util.HashMap<>();
+            audit.put("username", userName);
+            audit.put("userRole", userRole);
+            audit.put("action", action);
+            audit.put("details", details);
+            auditClient.logAction(audit);
+        } catch (Exception e) {
+            log.error("Failed to log audit event {} for user {}: {}", action, userName, e.getMessage());
+        }
     }
 
     /**
@@ -60,6 +75,8 @@ public class RequestController {
         validateRole(role, "STUDENT");
 
         RequestResponse response = requestService.createRequest(username, createRequestDto);
+        logAudit(username, role, "REQUEST_CREATED", String.format("Created request #%d with %d items",
+                response.getId(), response.getItems().size()));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -190,6 +207,8 @@ public class RequestController {
         validateRole(role, "ADMIN");
 
         RequestResponse response = requestService.approveRequest(id, adminUsername);
+        logAudit(adminUsername, role, "REQUEST_APPROVED", String.format("Approved request #%d for student '%s'",
+                id, response.getStudentUsername()));
         return ResponseEntity.ok(response);
     }
 
@@ -216,6 +235,8 @@ public class RequestController {
 
         String reason = (approveRejectDto != null) ? approveRejectDto.getRejectionReason() : null;
         RequestResponse response = requestService.rejectRequest(id, adminUsername, reason);
+        logAudit(adminUsername, role, "REQUEST_REJECTED", String.format("Rejected request #%d for student '%s'. Reason: %s",
+                id, response.getStudentUsername(), reason != null ? reason : "None"));
         return ResponseEntity.ok(response);
     }
 
@@ -233,12 +254,15 @@ public class RequestController {
     })
     public ResponseEntity<RequestResponse> fulfillRequest(
             @PathVariable Long id,
+            @RequestHeader("X-User-Name") String adminUsername,
             @RequestHeader("X-User-Role") String role) {
 
-        log.info("AUDIT: PUT /api/requests/{}/fulfill - Role: {}", id, role);
+        log.info("AUDIT: PUT /api/requests/{}/fulfill - Admin: {}, Role: {}", id, adminUsername, role);
         validateRole(role, "ADMIN");
 
-        RequestResponse response = requestService.fulfillRequest(id);
+        RequestResponse response = requestService.fulfillRequest(id, adminUsername);
+        logAudit(adminUsername, role, "REQUEST_FULFILLED", String.format("Fulfilled request #%d for student '%s'",
+                id, response.getStudentUsername()));
         return ResponseEntity.ok(response);
     }
 

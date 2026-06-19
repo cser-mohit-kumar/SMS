@@ -342,8 +342,8 @@ public class RequestService {
      * Fulfill a request: change status from APPROVED to FULFILLED.
      */
     @Transactional
-    public RequestResponse fulfillRequest(Long id) {
-        log.info("AUDIT: Fulfilling request ID: {}", id);
+    public RequestResponse fulfillRequest(Long id, String adminUsername) {
+        log.info("AUDIT: Admin '{}' fulfilling request ID: {}", adminUsername, id);
 
         StationeryRequest request = requestRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Request", "id", id));
@@ -354,9 +354,10 @@ public class RequestService {
         }
 
         request.setStatus(RequestStatus.FULFILLED);
+        request.setAdminUsername(adminUsername);
         StationeryRequest savedRequest = requestRepository.save(request);
 
-        log.info("AUDIT: Request ID: {} fulfilled successfully.", id);
+        log.info("AUDIT: Request ID: {} fulfilled successfully by admin '{}'.", id, adminUsername);
 
         return mapToResponse(savedRequest);
     }

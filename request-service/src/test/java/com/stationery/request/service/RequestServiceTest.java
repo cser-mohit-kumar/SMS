@@ -207,7 +207,7 @@ class RequestServiceTest {
         when(requestRepository.findById(1L)).thenReturn(Optional.of(testRequest));
         when(requestRepository.save(any(StationeryRequest.class))).thenReturn(testRequest);
 
-        RequestResponse response = requestService.fulfillRequest(1L);
+        RequestResponse response = requestService.fulfillRequest(1L, "admin1");
 
         assertNotNull(response);
         verify(requestRepository).save(any(StationeryRequest.class));
