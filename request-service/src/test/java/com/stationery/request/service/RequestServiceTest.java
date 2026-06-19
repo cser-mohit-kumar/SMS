@@ -164,11 +164,11 @@ class RequestServiceTest {
     @Test
     @DisplayName("Should approve request successfully")
     void testApproveRequestSuccess() {
+        // testRequest starts with PENDING status (set in setUp)
         when(requestRepository.findById(1L)).thenReturn(Optional.of(testRequest));
         when(inventoryClient.deductItemQuantity(1L, 5)).thenReturn(true);
         when(requestRepository.save(any(StationeryRequest.class))).thenReturn(testRequest);
 
-        testRequest.setStatus(RequestStatus.APPROVED);
         RequestResponse response = requestService.approveRequest(1L, "admin1");
 
         assertNotNull(response);
@@ -189,10 +189,10 @@ class RequestServiceTest {
     @Test
     @DisplayName("Should reject request successfully")
     void testRejectRequestSuccess() {
+        // testRequest starts with PENDING status (set in setUp)
         when(requestRepository.findById(1L)).thenReturn(Optional.of(testRequest));
         when(requestRepository.save(any(StationeryRequest.class))).thenReturn(testRequest);
 
-        testRequest.setStatus(RequestStatus.REJECTED);
         RequestResponse response = requestService.rejectRequest(1L, "admin1", "Out of stock");
 
         assertNotNull(response);
@@ -202,11 +202,11 @@ class RequestServiceTest {
     @Test
     @DisplayName("Should fulfill approved request successfully")
     void testFulfillRequestSuccess() {
+        // Must be APPROVED before it can be fulfilled
         testRequest.setStatus(RequestStatus.APPROVED);
         when(requestRepository.findById(1L)).thenReturn(Optional.of(testRequest));
         when(requestRepository.save(any(StationeryRequest.class))).thenReturn(testRequest);
 
-        testRequest.setStatus(RequestStatus.FULFILLED);
         RequestResponse response = requestService.fulfillRequest(1L);
 
         assertNotNull(response);
