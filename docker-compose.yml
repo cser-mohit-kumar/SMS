@@ -23,6 +23,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_ROOT_HOST: '%'
+      TZ: Asia/Kolkata
     ports:
       - "3307:3306"
     volumes:
@@ -46,6 +47,8 @@ services:
       dockerfile: Dockerfile
     container_name: sms-config-server
     restart: unless-stopped
+    environment:
+      TZ: Asia/Kolkata
     ports:
       - "8888:8888"
     depends_on:
@@ -78,6 +81,7 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
       EUREKA_SERVER_PEER_NODE_READ_TIMEOUT_MS: "20000"
+      TZ: Asia/Kolkata
     networks:
       - sms-network
     healthcheck:
@@ -107,6 +111,7 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      TZ: Asia/Kolkata
     networks:
       - sms-network
     healthcheck:
@@ -137,10 +142,11 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/auth_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/auth_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      TZ: Asia/Kolkata
     networks:
       - sms-network
     healthcheck:
@@ -171,10 +177,11 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/inventory_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/inventory_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      TZ: Asia/Kolkata
     networks:
       - sms-network
     healthcheck:
@@ -207,10 +214,11 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_CONFIG_IMPORT: configserver:http://config-server:8888
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/request_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/request_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      TZ: Asia/Kolkata
     networks:
       - sms-network
     healthcheck:
@@ -236,6 +244,7 @@ services:
         condition: service_healthy
     environment:
       REACT_APP_API_BASE_URL: http://localhost:8090
+      TZ: Asia/Kolkata
     networks:
       - sms-network
 

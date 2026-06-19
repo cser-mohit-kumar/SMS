@@ -6,7 +6,7 @@ spring:
 
   # Fallback configuration (used when Config Server is unavailable)
   datasource:
-    url: jdbc:mysql://localhost:3306/request_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/request_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=Asia/Kolkata&allowPublicKeyRetrieval=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
