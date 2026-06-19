@@ -1,0 +1,359 @@
+/* =========================================================
+   STATIONERY MANAGEMENT SYSTEM — DESIGN SYSTEM
+   Palette: Sage Green + Dusty Rose, on warm cream base.
+   Display face: Sora · Body/data face: Inter
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap');
+
+:root {
+  /* ---- Sage (brand / primary) ---- */
+  --sage-950: #1A2E1C;
+  --sage-900: #243826;
+  --sage-800: #355938;
+  --sage-700: #4A7350;
+  --sage-600: #5C8A63;
+  --sage-500: #6B8F71;
+  --sage-400: #8AAE8F;
+  --sage-300: #A8C5AC;
+  --sage-200: #C8DCC9;
+  --sage-100: #E3EFE4;
+  --sage-50:  #F2F8F3;
+
+  /* ---- Rose (secondary / accent) ---- */
+  --rose-800: #6B3A32;
+  --rose-700: #8B4D42;
+  --rose-600: #A8625A;
+  --rose-500: #C4887A;
+  --rose-400: #D4A094;
+  --rose-300: #E4BBB2;
+  --rose-200: #F0D5CF;
+  --rose-100: #F8EBE8;
+  --rose-50:  #FDF6F5;
+
+  /* ---- Coral (rejection / destructive) ---- */
+  --coral-700: #9B3B3B;
+  --coral-600: #B84D4D;
+  --coral-500: #D06060;
+  --coral-200: #F2C4C4;
+  --coral-100: #FAE2E2;
+  --coral-50:  #FDF2F2;
+
+  /* ---- Amber (low stock / caution) ---- */
+  --amb-700: #8B6914;
+  --amb-600: #A88020;
+  --amb-500: #C49A30;
+  --amb-100: #F5E6BE;
+  --amb-50:  #FBF3E0;
+
+  /* ---- Warm Neutrals ---- */
+  --warm-950: #1A1918;
+  --warm-900: #2D2D2B;
+  --warm-800: #3D3C39;
+  --warm-700: #55534E;
+  --warm-600: #706D65;
+  --warm-500: #8E8A80;
+  --warm-400: #AAA69C;
+  --warm-300: #C5C1B8;
+  --warm-200: #DDD9D1;
+  --warm-100: #EEECE7;
+  --warm-50:  #F7F6F3;
+  --warm-0:   #FFFFFF;
+
+  /* ---- Aliases used throughout the app ---- */
+  --brand:          var(--sage-500);
+  --brand-strong:   var(--sage-600);
+  --accent:         var(--rose-500);
+  --accent-strong:  var(--rose-600);
+
+  /* Lavender aliases kept for backward compat with existing classes */
+  --lav-900: var(--sage-900);
+  --lav-800: var(--sage-800);
+  --lav-700: var(--sage-700);
+  --lav-600: var(--sage-600);
+  --lav-500: var(--sage-500);
+  --lav-400: var(--sage-400);
+  --lav-300: var(--sage-300);
+  --lav-200: var(--sage-200);
+  --lav-100: var(--sage-100);
+  --lav-50:  var(--sage-50);
+
+  /* Green aliases → sage */
+  --grn-800: var(--sage-800);
+  --grn-700: var(--sage-700);
+  --grn-600: var(--sage-600);
+  --grn-500: var(--sage-500);
+  --grn-400: var(--sage-400);
+  --grn-300: var(--sage-300);
+  --grn-200: var(--sage-200);
+  --grn-100: var(--sage-100);
+  --grn-50:  var(--sage-50);
+
+  /* Clay aliases → coral */
+  --clay-700: var(--coral-700);
+  --clay-600: var(--coral-600);
+  --clay-500: var(--coral-500);
+  --clay-100: var(--coral-200);
+  --clay-50:  var(--coral-50);
+
+  /* Ink aliases → warm */
+  --ink-900: var(--warm-900);
+  --ink-700: var(--warm-700);
+  --ink-500: var(--warm-500);
+  --ink-400: var(--warm-400);
+  --ink-300: var(--warm-300);
+  --line:      var(--warm-200);
+  --line-soft: var(--warm-100);
+  --paper-0:   var(--warm-0);
+  --paper-50:  var(--warm-50);
+  --paper-100: var(--warm-100);
+
+  --bg-app:    #FAFAF8;
+  --bg-card:   #FFFFFF;
+  --text-primary:   #2D2D2B;
+  --text-secondary: #706D65;
+  --text-muted:     #AAA69C;
+  --border-color:   #E8E5DE;
+
+  /* Indigo aliases for backward compatibility */
+  --ind-50: var(--sage-50);
+  --ind-100: var(--sage-100);
+  --ind-200: var(--sage-200);
+  --ind-300: var(--sage-300);
+  --ind-400: var(--sage-400);
+  --ind-500: var(--sage-500);
+  --ind-600: var(--sage-600);
+  --ind-700: var(--sage-700);
+  --ind-800: var(--sage-800);
+  --ind-900: var(--sage-900);
+  --ind-950: var(--sage-950);
+
+  /* Teal aliases for backward compatibility */
+  --teal-50: var(--sage-50);
+  --teal-100: var(--sage-100);
+  --teal-200: var(--sage-200);
+  --teal-300: var(--sage-300);
+  --teal-400: var(--sage-400);
+  --teal-500: var(--sage-500);
+  --teal-600: var(--sage-600);
+  --teal-700: var(--sage-700);
+  --teal-800: var(--sage-800);
+
+  /* Rose aliases for backward compatibility */
+  --rose-100-alias: var(--rose-100);
+  --rose-50-alias: var(--rose-50);
+  --rose-600-alias: var(--rose-600);
+
+  /* ---- Radius ---- */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* ---- Shadows (warm-toned) ---- */
+  --shadow-xs: 0 1px 3px rgba(45, 45, 43, 0.05);
+  --shadow-sm: 0 4px 12px rgba(45, 45, 43, 0.07);
+  --shadow-md: 0 12px 32px rgba(45, 45, 43, 0.10);
+  --shadow-lg: 0 24px 56px rgba(45, 45, 43, 0.14);
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-fast: 0.18s var(--ease);
+  --transition-normal: 0.3s var(--ease);
+  --transition-slow: 0.5s var(--ease);
+
+  /* ---- Type ---- */
+  --font-display: 'Sora', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* =========================================
+   RESET
+   ========================================= */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+/* Subtle warm radial gradient background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(107, 143, 113, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(196, 136, 122, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--brand-strong);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+input,
+select,
+textarea {
+  font-family: var(--font-body);
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 2px solid var(--sage-400);
+  outline-offset: 2px;
+}
+
+/* =========================================
+   SCROLLBAR
+   ========================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--warm-200);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--warm-300);
+}
+
+/* =========================================
+   ANIMATIONS
+   ========================================= */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-18px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(24px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+@keyframes gentlePulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.02); opacity: 0.85; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(107, 143, 113, 0.15); }
+  50% { box-shadow: 0 0 0 8px rgba(107, 143, 113, 0); }
+}
+
+/* =========================================
+   UTILITIES
+   ========================================= */
+
+.fade-in { animation: fadeIn 0.45s var(--ease) forwards; }
+.slide-up { animation: slideUp 0.45s var(--ease) forwards; }
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--sage-600), var(--rose-500));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

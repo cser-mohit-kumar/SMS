@@ -1,0 +1,16 @@
+/* Inventory page — most visual language comes from the shared kit in
+   App.css (.toolbar, .data-table, .chip, .low-stock-flag, .pagination-*).
+   This file only holds page-specific responsive tweaks. */
+
+@media (max-width: 640px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar .input-search-wrap,
+  .toolbar .field-control,
+  .toolbar > button {
+    width: 100%;
+  }
+}

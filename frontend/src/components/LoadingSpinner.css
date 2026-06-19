@@ -1,0 +1,31 @@
+/* =========================================
+   LOADING SPINNER
+   ========================================= */
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1.25rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.spinner-ring {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 4px solid var(--sage-100);
+  border-top-color: var(--sage-600);
+  border-right-color: var(--grn-500);
+  animation: spin 0.85s linear infinite;
+}
+
+.spinner-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  animation: pulse 1.5s ease-in-out infinite;
+}

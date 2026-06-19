@@ -1,0 +1,53 @@
+/* =========================================================
+   REQUEST PAGES — shared by My Requests and Manage Requests.
+   Stamp badges, chip tags, and pagination/table chrome come
+   from the shared kit in App.css; this file covers the
+   page-specific bits: filter toolbar and the inline reject form.
+   ========================================================= */
+
+.request-meta {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.reject-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.reject-form input {
+  flex: 1 1 160px;
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--clay-100);
+  background: var(--clay-50);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+}
+
+.reject-form input:focus {
+  outline: none;
+  border-color: var(--clay-500);
+  box-shadow: 0 0 0 3px var(--clay-100);
+}
+
+.reject-form input::placeholder {
+  color: var(--clay-600);
+  opacity: 0.6;
+}
+
+@media (max-width: 640px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar .field-control {
+    width: 100%;
+  }
+}

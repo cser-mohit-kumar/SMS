@@ -1,0 +1,62 @@
+# ==========================================
+# Stationery Management System - Git Ignore
+# ==========================================
+
+# ── Maven Build Output ──
+**/target/
+
+# ── Node.js ──
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Root-level stale lockfile (real one is in frontend/)
+/package-lock.json
+
+# ── Environment Files (keep frontend/.env as it has safe defaults) ──
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ── IDE / Editor ──
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+.nbproject/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+*~
+
+# ── OS Generated ──
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ── Logs ──
+*.log
+
+# ── Docker ──
+.docker/
+
+# ── JaCoCo / Coverage ──
+**/jacoco.exec
+
+# ── SonarQube ──
+.scannerwork/
+
+# ── Misc ──
+.gemini/
+tmp/
+temp/
