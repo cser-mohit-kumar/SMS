@@ -60,3 +60,6 @@ Desktop.ini
 .gemini/
 tmp/
 temp/
+
+# error
+error.txt

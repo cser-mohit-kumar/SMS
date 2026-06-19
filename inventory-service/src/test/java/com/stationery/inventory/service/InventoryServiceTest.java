@@ -2,6 +2,7 @@ package com.stationery.inventory.service;
 
 import com.stationery.inventory.dto.StationeryItemRequest;
 import com.stationery.inventory.dto.StationeryItemResponse;
+import com.stationery.inventory.exception.InsufficientStockException;
 import com.stationery.inventory.model.StationeryItem;
 import com.stationery.inventory.repository.StationeryItemRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;
 import java.util.List;
@@ -52,7 +54,7 @@ class InventoryServiceTest {
                 .id(1L)
                 .name("Notebook")
                 .description("College ruled notebook")
-                .category("Books")
+                .category("BOOKS")
                 .unit("pcs")
                 .availableQuantity(100)
                 .minimumQuantity(10)
@@ -68,7 +70,7 @@ class InventoryServiceTest {
 
         assertNotNull(response);
         assertEquals("Notebook", response.getName());
-        assertEquals("Books", response.getCategory());
+        assertEquals("BOOKS", response.getCategory());
         assertEquals(100, response.getAvailableQuantity());
 
         verify(stationeryItemRepository).save(any(StationeryItem.class));
@@ -77,7 +79,8 @@ class InventoryServiceTest {
     @Test
     @DisplayName("Should retrieve all items with pagination")
     void testGetAllItemsSuccess() {
-        Pageable pageable = PageRequest.of(0, 20);
+        // Service creates PageRequest.of(page, size, Sort.by(sortBy))
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("name"));
         Page<StationeryItem> page = new PageImpl<>(Arrays.asList(testItem), pageable, 1);
         when(stationeryItemRepository.findAll(pageable)).thenReturn(page);
 
@@ -112,15 +115,16 @@ class InventoryServiceTest {
     @Test
     @DisplayName("Should retrieve items by category with pagination")
     void testGetItemsByCategorySuccess() {
-        Pageable pageable = PageRequest.of(0, 20);
+        // Service calls category.toUpperCase() and adds Sort.by("name")
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("name"));
         Page<StationeryItem> page = new PageImpl<>(Arrays.asList(testItem), pageable, 1);
-        when(stationeryItemRepository.findByCategory("Books", pageable)).thenReturn(page);
+        when(stationeryItemRepository.findByCategory("BOOKS", pageable)).thenReturn(page);
 
         Page<StationeryItemResponse> response = inventoryService.getItemsByCategory("Books", 0, 20);
 
         assertNotNull(response);
         assertEquals(1, response.getTotalElements());
-        verify(stationeryItemRepository).findByCategory("Books", pageable);
+        verify(stationeryItemRepository).findByCategory("BOOKS", pageable);
     }
 
     @Test
@@ -149,11 +153,12 @@ class InventoryServiceTest {
     @DisplayName("Should delete an item successfully")
     void testDeleteItemSuccess() {
         when(stationeryItemRepository.findById(1L)).thenReturn(Optional.of(testItem));
-        doNothing().when(stationeryItemRepository).deleteById(1L);
+        // Service calls delete(item), not deleteById(id)
+        doNothing().when(stationeryItemRepository).delete(testItem);
 
         assertDoesNotThrow(() -> inventoryService.deleteItem(1L));
         verify(stationeryItemRepository).findById(1L);
-        verify(stationeryItemRepository).deleteById(1L);
+        verify(stationeryItemRepository).delete(testItem);
     }
 
     @Test
@@ -171,30 +176,40 @@ class InventoryServiceTest {
     }
 
     @Test
-    @DisplayName("Should return false when insufficient stock for deduction")
+    @DisplayName("Should throw InsufficientStockException when stock is insufficient")
     void testDeductQuantityInsufficientStock() {
         testItem.setAvailableQuantity(5);
         when(stationeryItemRepository.findById(1L)).thenReturn(Optional.of(testItem));
 
-        boolean result = inventoryService.deductQuantity(1L, 10);
-
-        assertFalse(result);
+        // Service throws InsufficientStockException, not returns false
+        assertThrows(InsufficientStockException.class,
+                () -> inventoryService.deductQuantity(1L, 10));
         verify(stationeryItemRepository, never()).save(any());
     }
 
     @Test
     @DisplayName("Should retrieve low stock items")
     void testGetLowStockItemsSuccess() {
-        StationeryItem lowStockItem = testItem;
-        lowStockItem.setAvailableQuantity(5);
-        List<StationeryItem> lowStockItems = Arrays.asList(lowStockItem);
-        when(stationeryItemRepository.findByAvailableQuantityLessThanEqual(10)).thenReturn(lowStockItems);
+        // Service uses findAll() + filter (availableQuantity <= minimumQuantity)
+        StationeryItem lowStockItem = StationeryItem.builder()
+                .id(2L)
+                .name("Pen")
+                .description("Blue pen")
+                .category("WRITING")
+                .unit("pcs")
+                .availableQuantity(5)
+                .minimumQuantity(10)
+                .build();
+        when(stationeryItemRepository.findAll()).thenReturn(Arrays.asList(testItem, lowStockItem));
 
         List<StationeryItemResponse> response = inventoryService.getLowStockItems();
 
         assertNotNull(response);
+        // testItem: available=100, min=10 → NOT low stock
+        // lowStockItem: available=5, min=10 → IS low stock
         assertEquals(1, response.size());
-        verify(stationeryItemRepository).findByAvailableQuantityLessThanEqual(10);
+        assertEquals("Pen", response.get(0).getName());
+        verify(stationeryItemRepository).findAll();
     }
 
     @Test
