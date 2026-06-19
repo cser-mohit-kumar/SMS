@@ -37,6 +37,7 @@ public class RefreshTokenService {
 
         // Delete existing token if any to avoid uniqueness constraint violation on user_id OneToOne
         refreshTokenRepository.deleteByUser(user);
+        refreshTokenRepository.flush();
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
