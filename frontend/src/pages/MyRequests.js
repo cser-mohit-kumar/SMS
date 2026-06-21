@@ -10,6 +10,8 @@ const MyRequests = () => {
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [sortBy, setSortBy] = useState('date');
+  const [sortOrder, setSortOrder] = useState('desc');
 
   const loadRequests = async () => {
     setLoading(true);
@@ -31,6 +33,29 @@ const MyRequests = () => {
     loadRequests();
   }, [status]);
 
+  // Client-side sorting
+  const sortedRequests = React.useMemo(() => {
+    const list = [...requests];
+    list.sort((a, b) => {
+      let valA, valB;
+      if (sortBy === 'date') {
+        valA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+        valB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+      } else if (sortBy === 'status') {
+        valA = a.status || '';
+        valB = b.status || '';
+      } else if (sortBy === 'itemName') {
+        valA = a.items?.[0]?.itemName || '';
+        valB = b.items?.[0]?.itemName || '';
+      }
+
+      if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
+      if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
+      return 0;
+    });
+    return list;
+  }, [requests, sortBy, sortOrder]);
+
   return (
     <div className="page-card">
       <div className="page-header">
@@ -45,8 +70,8 @@ const MyRequests = () => {
         </div>
       </div>
 
-      <div className="toolbar">
-        <div className="field-control">
+      <div className="toolbar" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+        <div className="field-control" style={{ minWidth: '150px' }}>
           <label htmlFor="status-filter">Filter by status</label>
           <select id="status-filter" className="select-control" value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="">All</option>
@@ -54,6 +79,23 @@ const MyRequests = () => {
             <option value="APPROVED">Approved</option>
             <option value="REJECTED">Rejected</option>
             <option value="FULFILLED">Fulfilled</option>
+          </select>
+        </div>
+
+        <div className="field-control" style={{ minWidth: '150px' }}>
+          <label htmlFor="sort-by">Sort by</label>
+          <select id="sort-by" className="select-control" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+            <option value="date">Date</option>
+            <option value="status">Status</option>
+            <option value="itemName">Item Name</option>
+          </select>
+        </div>
+
+        <div className="field-control" style={{ minWidth: '150px' }}>
+          <label htmlFor="sort-order">Order</label>
+          <select id="sort-order" className="select-control" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
           </select>
         </div>
       </div>
@@ -72,8 +114,8 @@ const MyRequests = () => {
             </tr>
           </thead>
           <tbody>
-            {requests.length ? (
-              requests.map((request) => (
+            {sortedRequests.length ? (
+              sortedRequests.map((request) => (
                 <tr key={request.id}>
                   <td className="cell-id">{request.requestId}</td>
                   <td>
